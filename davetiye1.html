@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Düğün Davetiyesi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #fff0f5, #ffffff);
+      margin: 0;
+      padding: 0;
+      color: #333;
+      text-align: center;
+      overflow-x: hidden;
+    }
+    header {
+      padding: 20px;
+    }
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 60px; /* daha büyük */
+      margin: 10px 0;
+      color: #ff3366;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+    }
+    p {
+      margin: 5px 0;
+    }
+    .card {
+      background: white;
+      margin: 15px auto;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      max-width: 400px;
+    }
+    .countdown {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 15px;
+    }
+    .countdown div {
+      background: #f8f8f8;
+      padding: 10px;
+      border-radius: 10px;
+      width: 60px;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 15px;
+      background: #ff6699;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background: #e05588;
+    }
+    .flex-row {
+      display: flex;
+      justify-content: center;
+      gap: 4px; /* aradaki boşluk çok küçük */
+      margin: 20px auto;
+      max-width: 420px;
+    }
+    .flex-row .card {
+      flex: 1;
+      max-width: 200px;
+    }
+    footer {
+      padding:20px;
+      font-size:12px;
+      color:#777;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+
+  <header>
+    <h1>Sima Sümeyra & Yusuf</h1>
+    <p>Çok uzatmadan söyleyelim: evleniyoruz.<br>Gelirseniz seviniriz. (nokta)</p>
+  </header>
+
+  <div class="card">
+    <h3>📅 Tarih ve Saat</h3>
+    <p>12 Ekim 2025 - Cumartesi - 19:00</p>
+  </div>
+
+  <div class="card">
+    <h3>📍 Mekan</h3>
+    <p>Okçu Wedding Düğün Salonu</p>
+    <p>Erkekler: Salon Med - Kadınlar: Salon Mittani</p>
+    <a href="https://maps.app.goo.gl/2tKd5tDD6sNdw2Yc9" target="_blank" class="btn">➡️ Yol Tarifi</a>
+  </div>
+
+  <div class="card">
+    <h3>⏳ Geri Sayım</h3>
+    <div class="countdown" id="countdown"></div>
+  </div>
+
+  <div class="flex-row">
+    <div class="card">
+      <h3>👰 Gelinin Ailesi</h3>
+      <p>Nafiz & Zehra Çelik</p>
+    </div>
+    <div class="card">
+      <h3>🤵 Damatın Ailesi</h3>
+      <p>Çetin & Necla Kızılkaya</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📞 Katılım Bilgisi</h3>
+    <a href="tel:05077140551" class="btn">📞 0507 714 05 51</a>
+  </div>
+
+  <footer>
+    Sevgiyle, saygıyla…
+  </footer>
+
+  <!-- Konfeti & Havai Fişek -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script>
+    // Geri sayım
+    const target = new Date("2025-10-12T19:00:00").getTime();
+    const el = document.getElementById("countdown");
+
+    setInterval(() => {
+      const now = new Date().getTime();
+      const diff = target - now;
+
+      if (diff < 0) {
+        el.innerHTML = "Başladı 🎉";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000*60*60*24));
+      const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+      const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+      const seconds = Math.floor((diff % (1000*60)) / 1000);
+
+      el.innerHTML = `
+        <div><strong>${days}</strong><br>Gün</div>
+        <div><strong>${hours}</strong><br>Saat</div>
+        <div><strong>${minutes}</strong><br>Dakika</div>
+        <div><strong>${seconds}</strong><br>Sn</div>
+      `;
+    }, 1000);
+
+    // Konfeti patlaması
+    function launchConfetti() {
+      var duration = 2 * 1000;
+      var end = Date.now() + duration;
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 }
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 }
+        });
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      })();
+    }
+
+    // Havai fişek animasyonu
+    function fireworks() {
+      const count = 200;
+      const defaults = { origin: { y: 0.7 } };
+
+      function fire(particleRatio, opts) {
+        confetti(Object.assign({}, defaults, opts, {
+          particleCount: Math.floor(count * particleRatio)
+        }));
+      }
+
+      fire(0.25, { spread: 26, startVelocity: 55 });
+      fire(0.2, { spread: 60 });
+      fire(0.35, { spread: 100, decay: 0.91, scalar: 1.2 });
+      fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.3 });
+      fire(0.1, { spread: 120, startVelocity: 45 });
+    }
+
+    // Sayfa açılınca efekler
+    window.onload = () => {
+      launchConfetti();
+      setTimeout(fireworks, 2500);
+      setInterval(fireworks, 6000);
+    };
+  </script>
+</body>
+</html>
